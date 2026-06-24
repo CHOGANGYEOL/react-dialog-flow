@@ -1,28 +1,27 @@
 # react-dialog-flow
 
-A headless dialog stack manager for React, based on the dialog provider used in
-`ext-wallet-fe`.
+A typed React dialog stack for component-driven flows, nested dialogs, and
+result-bearing async work.
 
-## Development
+## Install
 
 ```bash
-pnpm install
-pnpm build
-pnpm test
-pnpm typecheck
+pnpm add react-dialog-flow
 ```
 
-## Project layout
+```bash
+npm install react-dialog-flow
+```
 
-- `src/core`: React-independent registry, stack, and store logic.
-- `src/react`: React Provider, hook, and headless renderer integration.
-- `tests`: Core-store tests.
-- `examples/basic`: A small consumer example with custom dialog UI.
+```bash
+yarn add react-dialog-flow
+```
 
-## Current API
+## Quick start
 
-The component-based API also supports result-bearing dialog flows with
-`openAsync`.
+Render one provider near the root of the application. Components opened through
+the stack receive their domain props normally; dialog entry controls come from
+`useDialogInstance`.
 
 ```tsx
 import { DialogProvider, useDialog, useDialogInstance } from 'react-dialog-flow';
@@ -30,66 +29,120 @@ import { DialogProvider, useDialog, useDialogInstance } from 'react-dialog-flow'
 function ConfirmDialog({ title }: { title: string }) {
   const { close } = useDialogInstance();
 
-  return (
-    <section role="dialog">
-      <h2>{title}</h2>
-      <button onClick={() => close('header')}>Cancel</button>
-    </section>
-  );
+  return <section role="dialog">
+    <h2>{title}</h2>
+    <button onClick={() => close('header')}>Cancel</button>
+  </section>;
 }
 
 function Page() {
   const { open } = useDialog();
-
   return <button onClick={() => open(ConfirmDialog, { title: 'Delete?' })}>Delete</button>;
 }
 
-function App() {
+export function App() {
   return <DialogProvider><Page /></DialogProvider>;
 }
 ```
 
-For a dialog that returns a value, complete it from the entry context. The
-promise resolves after its exit animation has finished.
+`DialogProvider` creates a portal by default. Set `withPortal={false}` and
+render `DialogRenderer` manually when the application needs to control its
+placement.
+
+## Async results
+
+Use `openAsync` when the caller only needs a value. A normal dismissal resolves
+to `false` by default, or to the value returned by `onDismiss`.
 
 ```tsx
 function ConfirmDialog() {
-  const { complete, close } = useDialogInstance<boolean>();
-  return <>
-    <button onClick={() => complete(true)}>Confirm</button>
-    <button onClick={() => close('header')}>Cancel</button>
-  </>;
+  const { complete } = useDialogInstance<boolean>();
+  return <button onClick={() => complete(true)}>Confirm</button>;
 }
 
-const confirmed = await openAsync<boolean>(ConfirmDialog, {
-  onDismiss: () => false,
-});
+function DeleteButton() {
+  const { openAsync } = useDialog();
 
-// Use openAsyncResult when the dismissal reason matters.
-const result = await openAsyncResult<boolean>(ConfirmDialog);
+  const remove = async () => {
+    const confirmed = await openAsync<boolean>(ConfirmDialog, {
+      onDismiss: () => false,
+    });
+    if (confirmed) await deleteProject();
+  };
+
+  return <button onClick={() => void remove()}>Delete project</button>;
+}
 ```
 
-`DialogProvider` creates a portal container by default and renders the stack
-there. Set `withPortal={false}` and render `DialogRenderer` yourself when the
-application needs to control placement.
+Use `openAsyncResult` when the dismissal reason matters.
 
-## Optional UI primitives
+```tsx
+const { openAsyncResult } = useDialog();
+const result = await openAsyncResult<boolean>(ConfirmDialog);
 
-The stack manager remains headless. Import a native-dialog primitive when an
-app wants a styled backdrop, panel, header close button, Escape handling,
-scroll-lock, and enter/exit transitions:
+if (result.status === 'completed') {
+  // result.value
+} else {
+  // result.reason: esc, backdrop, header, or programmatic
+}
+```
+
+Both APIs resolve after the entry has completed its exit lifecycle.
+
+## Optional UI primitive
+
+The stack is headless. Import the UI primitive for a native modal dialog,
+backdrop, scroll lock, focus restoration, default styles, and CSS transitions.
 
 ```tsx
 import { Dialog } from 'react-dialog-flow/ui';
 import 'react-dialog-flow/ui/style.css';
+
+function ConfirmDialog() {
+  const { complete } = useDialogInstance<boolean>();
+
+  return <Dialog closeOnBackdrop>
+    <Dialog.Header>
+      <Dialog.Title>Delete project?</Dialog.Title>
+    </Dialog.Header>
+    <Dialog.Description>This cannot be undone.</Dialog.Description>
+    <Dialog.Footer>
+      <button onClick={() => complete(true)}>Delete</button>
+    </Dialog.Footer>
+  </Dialog>;
+}
 ```
 
-`Dialog` supplies sensible defaults and exposes `className`, `backdropClassName`,
-`backdropProps`, `panel`, `data-state`, and CSS custom properties for overriding
-them. The default motion duration is 180ms; set `motionDuration={0}` to disable
-it. `Dialog.Header` includes an SVG close icon by default; use `closeButtonContent`
-or `closeButtonProps` to customize it.
+`Dialog.Title` supplies the accessible name and `Dialog.Description` is
+optional supporting text. Use `initialFocusRef` and `finalFocusRef` when the
+default focus placement or restoration is not appropriate. Customize visual
+defaults through classes, `backdropProps`, `panel`, `overlay`, and CSS custom
+properties.
 
-Use `Dialog.Title` for the dialog's accessible name. `Dialog.Description` is
-optional and links supporting text through `aria-describedby`. `initialFocusRef`
-and `finalFocusRef` override the default focus placement and restoration.
+## Documentation playground
+
+The Vite example is also the local documentation playground. It exercises
+stacking, `closeTop`, `closeAll`, Escape handling, async results, and the UI
+primitive.
+
+```bash
+pnpm demo
+```
+
+## Development
+
+```bash
+pnpm install
+pnpm verify
+```
+
+`verify` runs typecheck, tests, and the library build. The same command runs
+automatically before packing or publishing.
+
+## Project layout
+
+- `src/core`: React-independent stack and type definitions.
+- `src/react`: provider, renderer, hooks, and entry lifecycle integration.
+- `src/ui`: optional native-dialog UI primitive and styles.
+- `tests`: reducer and React lifecycle integration coverage.
+- `examples/basic`: documentation site and live playground.
