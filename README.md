@@ -126,7 +126,7 @@ stacking, `closeTop`, `closeAll`, Escape handling, async results, and the UI
 primitive.
 
 ```bash
-pnpm demo
+pnpm docs
 ```
 
 ## Development
@@ -145,4 +145,4 @@ automatically before packing or publishing.
 - `src/react`: provider, renderer, hooks, and entry lifecycle integration.
 - `src/ui`: optional native-dialog UI primitive and styles.
 - `tests`: reducer and React lifecycle integration coverage.
-- `examples/basic`: documentation site and live playground.
+- `docs`: documentation site and live playground.

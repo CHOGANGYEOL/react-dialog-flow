@@ -8,12 +8,12 @@ primitive.
 Run it from the repository root:
 
 ```bash
-pnpm demo
+pnpm docs
 ```
 
 The command builds the library first, then starts Vite. To create a production
 build of the library and this documentation app without starting a server:
 
 ```bash
-pnpm demo:build
+pnpm docs:build
 ```

@@ -50,8 +50,8 @@
     "verify": "pnpm typecheck && pnpm test && pnpm build",
     "prepack": "pnpm verify",
     "typecheck": "tsc --noEmit",
-    "demo": "pnpm build && pnpm --filter basic dev",
-    "demo:build": "pnpm build && pnpm --filter basic build"
+    "docs": "pnpm build && pnpm --filter docs dev",
+    "docs:build": "pnpm build && pnpm --filter docs build"
   },
   "peerDependencies": {
     "react": ">=18.0.0",
