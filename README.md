@@ -151,7 +151,12 @@ be completed or dismissed explicitly.
   --rdf-dialog-panel-background: #111827;
   --rdf-dialog-panel-color: #f9fafb;
   --rdf-dialog-panel-radius: 1.25rem;
+  --rdf-dialog-header-gap: 0.75rem;
+  --rdf-dialog-close-button-size: 2.25rem;
+  --rdf-dialog-close-button-radius: 999px;
+  --rdf-dialog-close-button-hover-background: rgb(255 255 255 / 10%);
   --rdf-dialog-close-icon-size: 1.5rem;
+  --rdf-dialog-close-icon-stroke-width: 1.8;
 }
 
 dialog.rdf-dialog .rdf-dialog__close-icon {

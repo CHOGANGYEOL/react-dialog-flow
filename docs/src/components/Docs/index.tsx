@@ -186,6 +186,8 @@ import 'react-dialog-flow/ui/style.css';
 .danger-dialog {
   --rdf-dialog-panel-background: #111827;
   --rdf-dialog-panel-color: #f9fafb;
+  --rdf-dialog-close-button-size: 2.25rem;
+  --rdf-dialog-close-button-radius: 999px;
   --rdf-dialog-close-icon-size: 1.5rem;
 }`}</CodeExample>
           <div>
