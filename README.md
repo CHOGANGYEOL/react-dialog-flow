@@ -21,25 +21,36 @@ yarn add react-dialog-flow@beta
 
 ## Quick start
 
-Render one provider near the root of the application. Components opened through
-the stack receive their domain props normally; dialog entry controls come from
-`useDialogInstance`.
+Render one provider near the root of the application, then open dialogs as
+component-driven flows. Use `openAsync` when the caller wants to await a typed
+result instead of wiring boolean state by hand.
 
 ```tsx
 import { DialogProvider, useDialog, useDialogInstance } from 'react-dialog-flow';
 
 function ConfirmDialog({ title }: { title: string }) {
-  const { close } = useDialogInstance();
+  const { close, complete } = useDialogInstance<boolean>();
 
   return <section role="dialog">
     <h2>{title}</h2>
+    <button onClick={() => complete(true)}>Confirm</button>
     <button onClick={() => close('header')}>Cancel</button>
   </section>;
 }
 
 function Page() {
-  const { open } = useDialog();
-  return <button onClick={() => open(ConfirmDialog, { title: 'Delete?' })}>Delete</button>;
+  const { openAsync } = useDialog();
+
+  const remove = async () => {
+    const confirmed = await openAsync<boolean>(ConfirmDialog, {
+      title: 'Delete?',
+      onDismiss: () => false,
+    });
+
+    if (confirmed) await deleteProject();
+  };
+
+  return <button onClick={() => void remove()}>Delete</button>;
 }
 
 export function App() {
