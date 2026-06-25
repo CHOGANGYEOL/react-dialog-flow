@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.0-beta.4 — 2026-06-25
+
+- Expose additional CSS custom properties for dialog styling.
+- Improve docs positioning around async dialog flows.
+- Add branded logo assets, favicon, and social metadata.
+- Keep the header close button aligned when no header children are provided.
+
 ## 0.1.0-beta.3 — 2026-06-25
 
 - Add default classes and theme styles for dialog title, description, body, and
