@@ -69,8 +69,8 @@ export function Docs() {
           <Installation />
           <div>
             <p>
-              The package includes the headless stack, React provider, and
-              hooks for opening dialogs from any child screen.
+              The package includes the headless stack, React provider, and hooks
+              for opening dialogs from any child screen.
             </p>
             <p className="muted">
               Import <code>react-dialog-flow/ui</code> only when you want the
@@ -192,8 +192,8 @@ import 'react-dialog-flow/ui/style.css';
             <p>
               Import <code>react-dialog-flow/ui/style.css</code> only when you
               want the bundled theme. <code>Dialog.Title</code> supplies the
-              accessible name, and <code>Dialog.Description</code> adds
-              optional supporting text.
+              accessible name, and <code>Dialog.Description</code> adds optional
+              supporting text.
             </p>
           </div>
         </div>

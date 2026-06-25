@@ -117,11 +117,13 @@ function DialogRoot<C extends ElementType = "div">({
 
   const registerTitle = useCallback((id: string) => {
     setTitleId(id);
-    return () => setTitleId((current) => (current === id ? undefined : current));
+    return () =>
+      setTitleId((current) => (current === id ? undefined : current));
   }, []);
   const registerDescription = useCallback((id: string) => {
     setDescriptionId(id);
-    return () => setDescriptionId((current) => (current === id ? undefined : current));
+    return () =>
+      setDescriptionId((current) => (current === id ? undefined : current));
   }, []);
   const a11yContext = useMemo(
     () => ({ registerTitle, registerDescription }),
@@ -235,50 +237,50 @@ function DialogRoot<C extends ElementType = "div">({
   return (
     <DialogA11yContext.Provider value={a11yContext}>
       <dialog
-      ref={dialogRef}
-      aria-describedby={descriptionId}
-      aria-labelledby={titleId}
-      aria-modal="true"
-      className={["rdf-dialog", className].filter(Boolean).join(" ")}
-      data-backdrop={backdrop}
-      data-state={phase}
-      onKeyDownCapture={(event) => {
-        if (event.key === "Escape") {
-          event.preventDefault();
-          event.stopPropagation();
-          requestClose("esc");
-        }
-      }}
-      style={rootStyle}
-    >
-      {backdrop && (
-        <button
-          {...backdropProps}
-          aria-label={backdropProps?.["aria-label"] ?? "Close dialog"}
-          className={[
-            "rdf-dialog__backdrop",
-            backdropClassName,
-            backdropProps?.className,
-          ]
+        ref={dialogRef}
+        aria-describedby={descriptionId}
+        aria-labelledby={titleId}
+        aria-modal="true"
+        className={["rdf-dialog", className].filter(Boolean).join(" ")}
+        data-backdrop={backdrop}
+        data-state={phase}
+        onKeyDownCapture={(event) => {
+          if (event.key === "Escape") {
+            event.preventDefault();
+            event.stopPropagation();
+            requestClose("esc");
+          }
+        }}
+        style={rootStyle}
+      >
+        {backdrop && (
+          <button
+            {...backdropProps}
+            aria-label={backdropProps?.["aria-label"] ?? "Close dialog"}
+            className={[
+              "rdf-dialog__backdrop",
+              backdropClassName,
+              backdropProps?.className,
+            ]
+              .filter(Boolean)
+              .join(" ")}
+            disabled={!closeOnBackdrop || backdropProps?.disabled}
+            onClick={() => {
+              if (closeOnBackdrop) requestClose("backdrop");
+            }}
+            type="button"
+          />
+        )}
+        <Panel
+          {...panelProps}
+          className={["rdf-dialog__panel", panelClassName]
             .filter(Boolean)
             .join(" ")}
-          disabled={!closeOnBackdrop || backdropProps?.disabled}
-          onClick={() => {
-            if (closeOnBackdrop) requestClose("backdrop");
-          }}
-          type="button"
-        />
-      )}
-      <Panel
-        {...panelProps}
-        className={["rdf-dialog__panel", panelClassName]
-          .filter(Boolean)
-          .join(" ")}
-        style={mergedPanelStyle}
-      >
-        {children}
-      </Panel>
-      {overlay}
+          style={mergedPanelStyle}
+        >
+          {children}
+        </Panel>
+        {overlay}
       </dialog>
     </DialogA11yContext.Provider>
   );

@@ -42,7 +42,10 @@ h2 {
   line-height: 1.05;
   margin: 0 0 0.75rem;
 }
-h3 { font-size: 1rem; margin: 0 0 0.75rem; }
+h3 {
+  font-size: 1rem;
+  margin: 0 0 0.75rem;
+}
 p {
   line-height: 1.55;
 }
@@ -57,28 +60,136 @@ p {
 .muted {
   color: #a9b2c5;
 }
-.hero { max-width: 52rem; }
-.hero .intro { font-size: 1.15rem; max-width: 42rem; }
-.docs-nav { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 2rem; }
-.docs-nav a { border: 1px solid #2b3242; border-radius: 999px; color: #c7d1e5; padding: 0.45rem 0.75rem; text-decoration: none; }
-.docs-nav a:hover { border-color: #77a5ff; color: #fff; }
-.docs-section { border-top: 1px solid #2b3242; margin-top: 5rem; padding-top: 1.25rem; scroll-margin-top: 1.5rem; }
-.section-heading { max-width: 46rem; }
-.section-heading > .muted { margin-top: 0; }
-.section-kicker { color: #77a5ff; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.09em; margin: 0 0 0.6rem; text-transform: uppercase; }
-.docs-grid { align-items: start; display: grid; gap: 2rem; grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 1.75rem; }
-.docs-grid > div > :first-child { margin-top: 0; }
-.docs-grid code:not(.code-example code) { background: #202633; border-radius: 0.25rem; color: #cfe0ff; padding: 0.1rem 0.25rem; }
-.code-example { background: #0b0d12; border: 1px solid #2b3242; border-radius: 0.75rem; color: #d8e3f8; font: 0.8rem/1.6 "SFMono-Regular", Consolas, "Liberation Mono", monospace; margin: 0; overflow-x: auto; padding: 1rem 1.1rem; white-space: pre; }
-.installation { background: #0b0d12; border: 1px solid #2b3242; border-radius: 0.75rem; overflow: hidden; }
-.package-tabs { border-bottom: 1px solid #2b3242; display: flex; gap: 0.15rem; padding: 0.35rem; }
-.package-tabs button { background: transparent; border-radius: 0.4rem; color: #a9b2c5; padding: 0.35rem 0.6rem; }
-.package-tabs button.active { background: #202633; color: #fff; }
-.install-command { align-items: center; display: flex; font: 0.85rem/1.5 "SFMono-Regular", Consolas, "Liberation Mono", monospace; gap: 0.75rem; justify-content: space-between; padding: 0.8rem 0.9rem; }
-.install-command code { color: #d8e3f8; overflow-x: auto; white-space: nowrap; }
-.install-command button { background: #202633; color: #cfe0ff; flex: 0 0 auto; font: inherit; padding: 0.3rem 0.5rem; }
-.playground { margin-bottom: 2rem; }
-.playground-grid { display: grid; gap: 1rem; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); margin-top: 1.75rem; }
+.hero {
+  max-width: 52rem;
+}
+.hero .intro {
+  font-size: 1.15rem;
+  max-width: 42rem;
+}
+.docs-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 2rem;
+}
+.docs-nav a {
+  border: 1px solid #2b3242;
+  border-radius: 999px;
+  color: #c7d1e5;
+  padding: 0.45rem 0.75rem;
+  text-decoration: none;
+}
+.docs-nav a:hover {
+  border-color: #77a5ff;
+  color: #fff;
+}
+.docs-section {
+  border-top: 1px solid #2b3242;
+  margin-top: 5rem;
+  padding-top: 1.25rem;
+  scroll-margin-top: 1.5rem;
+}
+.section-heading {
+  max-width: 46rem;
+}
+.section-heading > .muted {
+  margin-top: 0;
+}
+.section-kicker {
+  color: #77a5ff;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  margin: 0 0 0.6rem;
+  text-transform: uppercase;
+}
+.docs-grid {
+  align-items: start;
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 1.75rem;
+}
+.docs-grid > div > :first-child {
+  margin-top: 0;
+}
+.docs-grid code:not(.code-example code) {
+  background: #202633;
+  border-radius: 0.25rem;
+  color: #cfe0ff;
+  padding: 0.1rem 0.25rem;
+}
+.code-example {
+  background: #0b0d12;
+  border: 1px solid #2b3242;
+  border-radius: 0.75rem;
+  color: #d8e3f8;
+  font:
+    0.8rem/1.6 "SFMono-Regular",
+    Consolas,
+    "Liberation Mono",
+    monospace;
+  margin: 0;
+  overflow-x: auto;
+  padding: 1rem 1.1rem;
+  white-space: pre;
+}
+.installation {
+  background: #0b0d12;
+  border: 1px solid #2b3242;
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+.package-tabs {
+  border-bottom: 1px solid #2b3242;
+  display: flex;
+  gap: 0.15rem;
+  padding: 0.35rem;
+}
+.package-tabs button {
+  background: transparent;
+  border-radius: 0.4rem;
+  color: #a9b2c5;
+  padding: 0.35rem 0.6rem;
+}
+.package-tabs button.active {
+  background: #202633;
+  color: #fff;
+}
+.install-command {
+  align-items: center;
+  display: flex;
+  font:
+    0.85rem/1.5 "SFMono-Regular",
+    Consolas,
+    "Liberation Mono",
+    monospace;
+  gap: 0.75rem;
+  justify-content: space-between;
+  padding: 0.8rem 0.9rem;
+}
+.install-command code {
+  color: #d8e3f8;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+.install-command button {
+  background: #202633;
+  color: #cfe0ff;
+  flex: 0 0 auto;
+  font: inherit;
+  padding: 0.3rem 0.5rem;
+}
+.playground {
+  margin-bottom: 2rem;
+}
+.playground-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  margin-top: 1.75rem;
+}
 .panel {
   background: #1b1f2a;
   border: 1px solid #2b3242;
@@ -160,8 +271,13 @@ p {
 }
 
 @media (max-width: 40rem) {
-  main { padding-top: 3.5rem; }
-  .docs-grid, .playground-grid { grid-template-columns: 1fr; }
+  main {
+    padding-top: 3.5rem;
+  }
+  .docs-grid,
+  .playground-grid {
+    grid-template-columns: 1fr;
+  }
   .floating-controls,
   .dialog-dock {
     justify-content: center;
