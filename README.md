@@ -8,15 +8,15 @@ Docs and live playground: https://dialog-flow.kangyeol.com
 ## Install
 
 ```bash
-pnpm add react-dialog-flow
+pnpm add react-dialog-flow@beta
 ```
 
 ```bash
-npm install react-dialog-flow
+npm install react-dialog-flow@beta
 ```
 
 ```bash
-yarn add react-dialog-flow
+yarn add react-dialog-flow@beta
 ```
 
 ## Quick start

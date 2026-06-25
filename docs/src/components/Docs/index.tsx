@@ -1,9 +1,9 @@
 import { useState } from "react";
 
 const installCommands = {
-  npm: "npm install react-dialog-flow",
-  pnpm: "pnpm add react-dialog-flow",
-  yarn: "yarn add react-dialog-flow",
+  npm: "npm install react-dialog-flow@beta",
+  pnpm: "pnpm add react-dialog-flow@beta",
+  yarn: "yarn add react-dialog-flow@beta",
 } as const;
 
 type PackageManager = keyof typeof installCommands;
