@@ -94,7 +94,10 @@ Both APIs resolve after the entry has completed its exit lifecycle.
 ## Optional UI primitive
 
 The stack is headless. Import the UI primitive for a native modal dialog,
-backdrop, scroll lock, focus restoration, default styles, and CSS transitions.
+backdrop, scroll lock, focus restoration, and exit-aware transitions. Minimal
+base styles are injected automatically so the primitive works without a CSS
+import. Add `react-dialog-flow/ui/style.css` only when you want the bundled
+default theme.
 
 ```tsx
 import { Dialog } from 'react-dialog-flow/ui';
@@ -117,9 +120,9 @@ function ConfirmDialog() {
 
 `Dialog.Title` supplies the accessible name and `Dialog.Description` is
 optional supporting text. Use `initialFocusRef` and `finalFocusRef` when the
-default focus placement or restoration is not appropriate. Customize visual
-defaults through classes, `backdropProps`, `panel`, `overlay`, and CSS custom
-properties.
+default focus placement or restoration is not appropriate. Customize the
+optional theme through classes, `backdropProps`, `panel`, `overlay`, and CSS
+custom properties.
 
 ## Documentation playground
 

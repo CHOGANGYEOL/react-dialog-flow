@@ -123,4 +123,22 @@ describe('DialogProvider integration', () => {
       expect(dialog?.getAttribute('aria-describedby')).toBe(description.id);
     });
   });
+
+  it('injects base UI styles once and applies structural classes', async () => {
+    const user = userEvent.setup();
+    render(<DialogProvider><OpenResultFlow onResult={() => undefined} /></DialogProvider>);
+
+    await user.click(screen.getByRole('button', { name: 'Open result' }));
+    expect(document.querySelectorAll('#react-dialog-flow-base-style')).toHaveLength(1);
+    expect(screen.getByRole('heading', { name: 'Confirm action' }).classList.contains('rdf-dialog__title')).toBe(true);
+    expect(screen.getByText('This action needs a decision.').classList.contains('rdf-dialog__description')).toBe(true);
+
+    fireEvent.keyDown(window, { key: 'Escape' });
+    await waitFor(() => expect(document.querySelector('dialog')?.dataset.state).toBe('closing'));
+    finishDialogExit();
+    await waitFor(() => expect(document.querySelector('dialog')).toBeNull());
+
+    await user.click(screen.getByRole('button', { name: 'Open result' }));
+    expect(document.querySelectorAll('#react-dialog-flow-base-style')).toHaveLength(1);
+  });
 });

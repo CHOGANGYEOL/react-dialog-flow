@@ -5,6 +5,7 @@ import {
   useContext,
   useEffect,
   useId,
+  useInsertionEffect,
   useLayoutEffect,
   useMemo,
   useRef,
@@ -14,8 +15,8 @@ import {
 } from "react";
 import type { CloseReason, RequestClose } from "../core/types";
 import { useDialogEntryControl } from "../react/DialogEntryControl";
+import { injectDialogBaseStyle } from "./baseStyle";
 import { DialogHeader } from "./DialogHeader";
-import "./dialog.css";
 
 let scrollLockCount = 0;
 let originalDocumentOverflow: string | null = null;
@@ -87,6 +88,10 @@ function DialogRoot<C extends ElementType = "div">({
   lockScroll: shouldLockScroll = true,
   children,
 }: DialogProps<C>) {
+  useInsertionEffect(() => {
+    injectDialogBaseStyle();
+  }, []);
+
   const dialogRef = useRef<HTMLDialogElement>(null);
   const closeFallbackTimerRef = useRef<number | null>(null);
   const enterFrameRef = useRef<number | null>(null);

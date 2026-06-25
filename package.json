@@ -35,7 +35,7 @@
       "import": "./dist/ui/index.js",
       "require": "./dist/ui/index.cjs"
     },
-    "./ui/style.css": "./dist/ui/index.css"
+    "./ui/style.css": "./dist/ui/style.css"
   },
   "files": [
     "dist"
