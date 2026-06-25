@@ -5,7 +5,7 @@ export {
   dialogsReducer,
   entriesToClose,
   openDialog,
-} from './core/createDialogStore';
+} from "./core/createDialogStore";
 export type {
   CloseDialog,
   CloseOptions,
@@ -23,8 +23,8 @@ export type {
   OpenDialog,
   OpenAsyncDialog,
   OpenAsyncResultDialog,
-} from './core/types';
-export { DialogProvider } from './react/DialogProvider';
-export { DialogRenderer } from './react/DialogRenderer';
-export { useDialog, useDialogStack } from './react/useDialog';
-export { useDialogInstance } from './react/DialogInstance';
+} from "./core/types";
+export { DialogProvider } from "./react/DialogProvider";
+export { DialogRenderer } from "./react/DialogRenderer";
+export { useDialog, useDialogStack } from "./react/useDialog";
+export { useDialogInstance } from "./react/DialogInstance";

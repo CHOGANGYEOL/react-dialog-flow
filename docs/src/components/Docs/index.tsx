@@ -69,8 +69,8 @@ export function Docs() {
           <Installation />
           <div>
             <p>
-              The package includes the headless stack, React provider, and
-              hooks for opening dialogs from any child screen.
+              The package includes the headless stack, React provider, and hooks
+              for opening dialogs from any child screen.
             </p>
             <p className="muted">
               Import <code>react-dialog-flow/ui</code> only when you want the
@@ -186,13 +186,14 @@ import 'react-dialog-flow/ui/style.css';
             <p>
               The optional UI primitive uses native <code>&lt;dialog&gt;</code>{" "}
               modal behavior, a backdrop, scroll lock, focus restoration, and
-              CSS enter/exit transitions.
+              enter/exit transitions. Minimal base styles are injected
+              automatically when <code>Dialog</code> renders.
             </p>
             <p>
-              <code>Dialog.Title</code> supplies the accessible name.{" "}
-              <code>Dialog.Description</code> is optional and adds supporting
-              text. Override initial or final focus with refs when the default
-              placement is not appropriate.
+              Import <code>react-dialog-flow/ui/style.css</code> only when you
+              want the bundled theme. <code>Dialog.Title</code> supplies the
+              accessible name, and <code>Dialog.Description</code> adds optional
+              supporting text.
             </p>
           </div>
         </div>

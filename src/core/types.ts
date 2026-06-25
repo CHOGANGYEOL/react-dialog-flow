@@ -53,8 +53,10 @@ export type AsyncDialogOptions<T> = {
   onDismiss?: (reason: CloseReason) => T;
 };
 
-export type DialogAsyncOpenProps<C extends React.ElementType, T> =
-  DialogOpenProps<C> & AsyncDialogOptions<T>;
+export type DialogAsyncOpenProps<
+  C extends React.ElementType,
+  T,
+> = DialogOpenProps<C> & AsyncDialogOptions<T>;
 
 export type OpenAsyncResultDialog = <
   T = void,

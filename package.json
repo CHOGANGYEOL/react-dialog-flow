@@ -1,6 +1,6 @@
 {
   "name": "react-dialog-flow",
-  "version": "0.1.0-beta.2",
+  "version": "0.1.0-beta.3",
   "description": "A typed React dialog stack with async results and optional native-modal UI primitives.",
   "keywords": [
     "react",
@@ -35,7 +35,7 @@
       "import": "./dist/ui/index.js",
       "require": "./dist/ui/index.cjs"
     },
-    "./ui/style.css": "./dist/ui/index.css"
+    "./ui/style.css": "./dist/ui/style.css"
   },
   "files": [
     "dist"
