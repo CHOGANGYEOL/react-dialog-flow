@@ -299,6 +299,40 @@ p {
 .dialog-panel p {
   color: #536079;
 }
+.choice-list {
+  display: grid;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+.choice-list button {
+  background: #e8eefb;
+  color: #182033;
+  text-align: left;
+}
+.choice-list button:hover {
+  background: #d9e6ff;
+}
+.field {
+  display: grid;
+  gap: 0.35rem;
+  margin-top: 0.85rem;
+}
+.field span {
+  color: #536079;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+.field input {
+  border: 1px solid #cbd5e1;
+  border-radius: 0.5rem;
+  color: #182033;
+  font: inherit;
+  padding: 0.65rem 0.75rem;
+}
+.field input:focus {
+  border-color: #77a5ff;
+  outline: 2px solid rgb(119 165 255 / 28%);
+}
 .dialog-actions {
   display: flex;
   gap: 0.5rem;

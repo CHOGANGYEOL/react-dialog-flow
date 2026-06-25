@@ -1,5 +1,13 @@
 import { useDialog, useDialogStack } from "react-dialog-flow";
-import { AlertDialog, ConfirmDialog, type Log } from "../Dialogs";
+import {
+  AlertDialog,
+  ConfirmDialog,
+  FormDialog,
+  NestedDialog,
+  SelectDialog,
+  type Log,
+  type ProfileFormValue,
+} from "../Dialogs";
 
 export function FlowControls({
   className,
@@ -43,6 +51,40 @@ export function FlowControls({
     });
     onLog(`Async completed: ${String(value)}`);
   };
+  const openSelect = async () => {
+    onLog("Select dialog opened");
+    const channel = await openAsync<string>(SelectDialog, {
+      onLog,
+      onDismiss: (reason) => {
+        onLog(`Select dismissed: ${reason}`);
+        return "none";
+      },
+    });
+    onLog(`Selected channel: ${channel}`);
+  };
+  const openForm = async () => {
+    onLog("Form dialog opened");
+    const profile = await openAsync<ProfileFormValue | null>(FormDialog, {
+      onLog,
+      onDismiss: (reason) => {
+        onLog(`Form dismissed: ${reason}`);
+        return null;
+      },
+    });
+    onLog(
+      profile
+        ? `Saved profile: ${profile.name} (${profile.role})`
+        : "Form returned no value",
+    );
+  };
+  const openNested = () => {
+    const id = open(NestedDialog, {
+      onLog,
+      closeCallback: (reason) => onLog(`Nested parent closed (${reason})`),
+    });
+    onLog(`Nested parent opened (${id.slice(0, 8)})`);
+  };
+
   return (
     <aside aria-label="Dialog flow controls" className={className}>
       <span className="stack-count">Stack {stack.length}</span>
@@ -51,6 +93,9 @@ export function FlowControls({
       </button>
       <button onClick={openAlert}>Open alert</button>
       <button onClick={() => void openAsyncConfirm()}>Open async</button>
+      <button onClick={() => void openSelect()}>Open select</button>
+      <button onClick={() => void openForm()}>Open form</button>
+      <button onClick={openNested}>Open nested</button>
       <button
         disabled={stack.length === 0}
         onClick={() => {
