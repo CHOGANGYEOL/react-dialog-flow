@@ -88,32 +88,36 @@ export function FlowControls({
   return (
     <aside aria-label="Dialog flow controls" className={className}>
       <span className="stack-count">Stack {stack.length}</span>
-      <button className="primary" onClick={openConfirm}>
-        Open confirm
-      </button>
-      <button onClick={openAlert}>Open alert</button>
-      <button onClick={() => void openAsyncConfirm()}>Open async</button>
-      <button onClick={() => void openSelect()}>Open select</button>
-      <button onClick={() => void openForm()}>Open form</button>
-      <button onClick={openNested}>Open nested</button>
-      <button
-        disabled={stack.length === 0}
-        onClick={() => {
-          onLog("Close top requested");
-          closeTop();
-        }}
-      >
-        Close top
-      </button>
-      <button
-        disabled={stack.length === 0}
-        onClick={() => {
-          onLog("Close all requested");
-          closeAll();
-        }}
-      >
-        Close all
-      </button>
+      <span className="control-group" aria-label="Open dialog examples">
+        <button className="primary" onClick={openConfirm}>
+          Confirm
+        </button>
+        <button onClick={openAlert}>Alert</button>
+        <button onClick={() => void openAsyncConfirm()}>Async</button>
+        <button onClick={() => void openSelect()}>Select</button>
+        <button onClick={() => void openForm()}>Form</button>
+        <button onClick={openNested}>Nested</button>
+      </span>
+      <span className="control-group" aria-label="Stack controls">
+        <button
+          disabled={stack.length === 0}
+          onClick={() => {
+            onLog("Close top requested");
+            closeTop();
+          }}
+        >
+          Close top
+        </button>
+        <button
+          disabled={stack.length === 0}
+          onClick={() => {
+            onLog("Close all requested");
+            closeAll();
+          }}
+        >
+          Close all
+        </button>
+      </span>
     </aside>
   );
 }
