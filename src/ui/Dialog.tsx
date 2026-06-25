@@ -281,39 +281,77 @@ function DialogRoot<C extends ElementType = "div">({
 
 export type DialogTitleProps = React.ComponentPropsWithoutRef<"h2">;
 
-function DialogTitle({ id: providedId, ...props }: DialogTitleProps) {
+function DialogTitle({
+  id: providedId,
+  className,
+  ...props
+}: DialogTitleProps) {
   const context = useContext(DialogA11yContext);
   const generatedId = useId();
   const id = providedId ?? generatedId;
 
   useEffect(() => context?.registerTitle(id), [context, id]);
 
-  return <h2 {...props} id={id} />;
+  return (
+    <h2
+      {...props}
+      className={["rdf-dialog__title", className].filter(Boolean).join(" ")}
+      id={id}
+    />
+  );
 }
 
 export type DialogDescriptionProps = React.ComponentPropsWithoutRef<"p">;
 
-function DialogDescription({ id: providedId, ...props }: DialogDescriptionProps) {
+function DialogDescription({
+  id: providedId,
+  className,
+  ...props
+}: DialogDescriptionProps) {
   const context = useContext(DialogA11yContext);
   const generatedId = useId();
   const id = providedId ?? generatedId;
 
   useEffect(() => context?.registerDescription(id), [context, id]);
 
-  return <p {...props} id={id} />;
+  return (
+    <p
+      {...props}
+      className={["rdf-dialog__description", className]
+        .filter(Boolean)
+        .join(" ")}
+      id={id}
+    />
+  );
 }
 
 function DialogBody({
   children,
+  className,
   ...props
 }: React.ComponentPropsWithoutRef<"div">) {
-  return <div {...props}>{children}</div>;
+  return (
+    <div
+      {...props}
+      className={["rdf-dialog__body", className].filter(Boolean).join(" ")}
+    >
+      {children}
+    </div>
+  );
 }
 function DialogFooter({
   children,
+  className,
   ...props
 }: React.ComponentPropsWithoutRef<"footer">) {
-  return <footer {...props}>{children}</footer>;
+  return (
+    <footer
+      {...props}
+      className={["rdf-dialog__footer", className].filter(Boolean).join(" ")}
+    >
+      {children}
+    </footer>
+  );
 }
 
 export const Dialog = Object.assign(DialogRoot, {
