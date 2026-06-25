@@ -8,9 +8,17 @@ export function App() {
         <p className="eyebrow">react-dialog-flow</p>
         <h1>Dialogs are flows, not just booleans.</h1>
         <p className="intro">
-          A small React dialog stack for component-driven screens, nested
-          modals, and result-bearing async work.
+          Open React dialogs from anywhere, await typed results, and keep
+          stacked flows out of your page state.
         </p>
+        <pre className="hero-example" aria-label="Async dialog result example">
+          <code>{`const confirmed = await openAsync<boolean>(ConfirmDialog, {
+  title: 'Delete project?',
+  onDismiss: () => false,
+});
+
+if (confirmed) await deleteProject();`}</code>
+        </pre>
         <nav aria-label="Documentation" className="docs-nav">
           <a href="#install">Install</a>
           <a href="#provider">Provider</a>
