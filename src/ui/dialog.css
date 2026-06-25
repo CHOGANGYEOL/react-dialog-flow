@@ -43,10 +43,12 @@
 }
 
 .rdf-dialog__close-button {
-  background: transparent;
+  background: var(--rdf-dialog-close-button-background, transparent);
   border-radius: var(--rdf-dialog-close-button-radius, 0.375rem);
-  color: inherit;
+  color: var(--rdf-dialog-close-button-color, inherit);
+  height: var(--rdf-dialog-close-button-size, auto);
   padding: var(--rdf-dialog-close-button-padding, 0.375rem);
+  width: var(--rdf-dialog-close-button-size, auto);
 }
 
 .rdf-dialog__close-button:hover {

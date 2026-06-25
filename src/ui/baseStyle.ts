@@ -55,9 +55,9 @@ dialog.rdf-dialog::backdrop {
 }
 
 .rdf-dialog__header {
-  align-items: center;
+  align-items: var(--rdf-dialog-header-align, center);
   display: flex;
-  justify-content: space-between;
+  justify-content: var(--rdf-dialog-header-justify, space-between);
 }
 
 .rdf-dialog__close-button {
@@ -70,12 +70,16 @@ dialog.rdf-dialog::backdrop {
 }
 
 .rdf-dialog__header > .rdf-dialog__close-button {
-  margin-left: auto;
+  margin-left: var(--rdf-dialog-close-button-margin-left, auto);
 }
 
 .rdf-dialog__close-icon {
   height: var(--rdf-dialog-close-icon-size, 1.25rem);
   width: var(--rdf-dialog-close-icon-size, 1.25rem);
+}
+
+.rdf-dialog__close-icon path {
+  stroke-width: var(--rdf-dialog-close-icon-stroke-width, 2);
 }
 
 .rdf-dialog[data-state="enter"] .rdf-dialog__backdrop,
