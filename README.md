@@ -5,11 +5,11 @@
 <h1 align="center">react-dialog-flow</h1>
 
 <p align="center">
-  Async dialog stacks for React.
+  Promise-based dialog orchestration for React.
 </p>
 
-A typed React dialog stack for component-driven flows, nested dialogs, and
-result-bearing async work.
+Open dialogs like functions, await typed results, and compose nested modal flows
+without scattered boolean state.
 
 Docs and live playground: https://dialog-flow.kangyeol.com
 
@@ -36,6 +36,20 @@ result instead of wiring boolean state by hand.
 ```tsx
 import { DialogProvider, useDialog, useDialogInstance } from 'react-dialog-flow';
 
+type User = { id: string; name: string };
+
+function UserSearchDialog() {
+  const { close, complete } = useDialogInstance<User | null>();
+
+  return <section role="dialog">
+    <h2>Find a user</h2>
+    <button onClick={() => complete({ id: 'u_123', name: 'Jiyoon' })}>
+      Select Jiyoon
+    </button>
+    <button onClick={() => close()}>Cancel</button>
+  </section>;
+}
+
 function ConfirmDialog({ title }: { title: string }) {
   const { close, complete } = useDialogInstance<boolean>();
 
@@ -49,16 +63,22 @@ function ConfirmDialog({ title }: { title: string }) {
 function Page() {
   const { openAsync } = useDialog();
 
-  const remove = async () => {
+  const inviteUser = async () => {
+    const user = await openAsync<User | null>(UserSearchDialog, {
+      onDismiss: () => null,
+    });
+
+    if (!user) return;
+
     const confirmed = await openAsync<boolean>(ConfirmDialog, {
-      title: 'Delete?',
+      title: `${user.name}을 추가할까요?`,
       onDismiss: () => false,
     });
 
-    if (confirmed) await deleteProject();
+    if (confirmed) await addUser(user.id);
   };
 
-  return <button onClick={() => void remove()}>Delete</button>;
+  return <button onClick={() => void inviteUser()}>Add user</button>;
 }
 
 export function App() {
@@ -109,6 +129,19 @@ if (result.status === 'completed') {
 ```
 
 Both APIs resolve after the entry has completed its exit lifecycle.
+
+## Migration notes
+
+There are no migration steps for the latest dialog lifecycle test coverage.
+The covered behavior already matches the public API:
+
+- `openAsync` and `openAsyncResult` resolve after exit transitions complete.
+- Dismissals report `esc`, `backdrop`, `header`, or `programmatic`.
+- In stacked flows, Escape and backdrop dismissal close the top dialog only.
+
+If a flow needs immediate promise resolution, set `motionDuration={0}` on the
+UI primitive or move immediate side effects into the dialog action handler. Use
+`closeAll()` when one action should dismiss the full stack.
 
 ## Optional UI primitive
 

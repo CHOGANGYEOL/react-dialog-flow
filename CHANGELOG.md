@@ -1,5 +1,24 @@
 # Changelog
 
+## Unreleased
+
+- Add integration coverage for async dismissal timing, ensuring `openAsync`
+  resolves only after the dialog exit lifecycle completes.
+- Add coverage for Escape and backdrop dismissal reasons across
+  `openAsyncResult` and `onDismiss`.
+- Add stacked dialog coverage to confirm Escape and backdrop dismissal close
+  only the top entry while lower entries remain mounted.
+
+### Migration notes
+
+- No application code changes are required. This release clarifies and tests
+  existing behavior.
+- If your app depends on async dialog promises resolving immediately when a
+  close is requested, move that work to the dialog action handler or set
+  `motionDuration={0}` for dialogs that should resolve without an exit delay.
+- In stacked flows, Escape and backdrop dismissal are top-entry operations.
+  Use `closeAll()` when the intended behavior is to dismiss every open entry.
+
 ## 0.1.0-beta.4 — 2026-06-25
 
 - Expose additional CSS custom properties for dialog styling.
