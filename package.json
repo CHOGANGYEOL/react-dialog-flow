@@ -1,6 +1,6 @@
 {
   "name": "react-dialog-flow",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Promise-based dialog orchestration for React.",
   "keywords": [
     "react",

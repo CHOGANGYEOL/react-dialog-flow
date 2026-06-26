@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.2.1 — 2026-06-26
+
+- Fix stale result cleanup when a dialog opened with `open()` completes without
+  an async result resolver.
+- Hide internal dialog store actions and reducer helpers from the top-level
+  public entry.
+- Improve the native `<dialog>` fallback path so `showModal()` failures still
+  preserve background inerting, assistive-technology hiding, and focus
+  containment.
+- Add `backdropCloseLabel` for customizing the accessible label of the backdrop
+  close button.
+- Clarify README positioning around promise-based dialog prior art, native
+  dialog fallback behavior, and backdrop button accessibility.
+
 ## 0.2.0 — 2026-06-26
 
 - Add `Dialog` `shouldClose(reason)` for synchronous or asynchronous dismissal
