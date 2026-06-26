@@ -58,6 +58,35 @@ function EscapeDisabledDialog() {
   );
 }
 
+function BackdropDismissDialog() {
+  return (
+    <Dialog closeOnBackdrop motionDuration={180}>
+      <Dialog.Header>
+        <Dialog.Title>Backdrop dismissal</Dialog.Title>
+      </Dialog.Header>
+      <Dialog.Description>Click outside to dismiss.</Dialog.Description>
+    </Dialog>
+  );
+}
+
+function StackDialog({
+  title,
+  value,
+}: {
+  title: string;
+  value: string;
+}) {
+  const { complete } = useDialogInstance<string>();
+  return (
+    <Dialog closeOnBackdrop motionDuration={180}>
+      <Dialog.Header>
+        <Dialog.Title>{title}</Dialog.Title>
+      </Dialog.Header>
+      <button onClick={() => complete(value)}>Complete {title}</button>
+    </Dialog>
+  );
+}
+
 function OpenAsyncFlow({ onResult }: { onResult: (value: boolean) => void }) {
   const { openAsync } = useDialog();
   return (
@@ -73,6 +102,44 @@ function OpenAsyncFlow({ onResult }: { onResult: (value: boolean) => void }) {
   );
 }
 
+function OpenBackdropDismissFlow({
+  onResult,
+}: {
+  onResult: (value: string) => void;
+}) {
+  const { openAsync } = useDialog();
+  return (
+    <button
+      onClick={async () =>
+        onResult(
+          await openAsync<string>(BackdropDismissDialog, {
+            onDismiss: (reason) => reason,
+          }),
+        )
+      }
+    >
+      Open backdrop async
+    </button>
+  );
+}
+
+function OpenBackdropResultFlow({
+  onResult,
+}: {
+  onResult: (value: unknown) => void;
+}) {
+  const { openAsyncResult } = useDialog();
+  return (
+    <button
+      onClick={async () =>
+        onResult(await openAsyncResult<string>(BackdropDismissDialog))
+      }
+    >
+      Open backdrop result
+    </button>
+  );
+}
+
 function OpenResultFlow({ onResult }: { onResult: (value: unknown) => void }) {
   const { openAsyncResult } = useDialog();
   return (
@@ -82,6 +149,34 @@ function OpenResultFlow({ onResult }: { onResult: (value: unknown) => void }) {
       }
     >
       Open result
+    </button>
+  );
+}
+
+function OpenStackedAsyncFlow({
+  onFirst,
+  onSecond,
+}: {
+  onFirst: (value: string) => void;
+  onSecond: (value: string) => void;
+}) {
+  const { openAsync } = useDialog();
+  return (
+    <button
+      onClick={() => {
+        void openAsync<string>(StackDialog, {
+          title: "First dialog",
+          value: "first",
+          onDismiss: (reason) => `first:${reason}`,
+        }).then(onFirst);
+        void openAsync<string>(StackDialog, {
+          title: "Second dialog",
+          value: "second",
+          onDismiss: (reason) => `second:${reason}`,
+        }).then(onSecond);
+      }}
+    >
+      Open stacked async
     </button>
   );
 }
@@ -153,9 +248,20 @@ function OpenAndCloseAllFlow({
 }
 
 function finishDialogExit() {
-  const panel = document.querySelector(".rdf-dialog__panel");
+  const panel =
+    document.querySelector('dialog[data-state="closing"] .rdf-dialog__panel') ??
+    document.querySelector(".rdf-dialog__panel");
   if (!panel) throw new Error("Dialog panel was not rendered.");
   fireEvent.transitionEnd(panel);
+}
+
+function clickTopBackdrop() {
+  const backdrops = document.querySelectorAll<HTMLButtonElement>(
+    ".rdf-dialog__backdrop",
+  );
+  const backdrop = backdrops[backdrops.length - 1];
+  if (!backdrop) throw new Error("Dialog backdrop was not rendered.");
+  fireEvent.click(backdrop);
 }
 
 describe("DialogProvider integration", () => {
@@ -176,6 +282,29 @@ describe("DialogProvider integration", () => {
     expect(onResult).not.toHaveBeenCalled();
     finishDialogExit();
     await waitFor(() => expect(onResult).toHaveBeenCalledWith(true));
+  });
+
+  it("resolves an openAsync dismissal only after the exit transition", async () => {
+    const user = userEvent.setup();
+    const onResult = vi.fn();
+    render(
+      <DialogProvider>
+        <OpenBackdropDismissFlow onResult={onResult} />
+      </DialogProvider>,
+    );
+
+    await user.click(
+      screen.getByRole("button", { name: "Open backdrop async" }),
+    );
+    await screen.findByRole("heading", { name: "Backdrop dismissal" });
+    clickTopBackdrop();
+
+    await waitFor(() =>
+      expect(document.querySelector("dialog")?.dataset.state).toBe("closing"),
+    );
+    expect(onResult).not.toHaveBeenCalled();
+    finishDialogExit();
+    await waitFor(() => expect(onResult).toHaveBeenCalledWith("backdrop"));
   });
 
   it("returns a dismiss reason for Escape through openAsyncResult", async () => {
@@ -200,6 +329,96 @@ describe("DialogProvider integration", () => {
         reason: "esc",
       }),
     );
+  });
+
+  it("returns a dismiss reason for backdrop through openAsyncResult", async () => {
+    const user = userEvent.setup();
+    const onResult = vi.fn();
+    render(
+      <DialogProvider>
+        <OpenBackdropResultFlow onResult={onResult} />
+      </DialogProvider>,
+    );
+
+    await user.click(
+      screen.getByRole("button", { name: "Open backdrop result" }),
+    );
+    await screen.findByRole("heading", { name: "Backdrop dismissal" });
+    clickTopBackdrop();
+    await waitFor(() =>
+      expect(document.querySelector("dialog")?.dataset.state).toBe("closing"),
+    );
+    finishDialogExit();
+    await waitFor(() =>
+      expect(onResult).toHaveBeenCalledWith({
+        status: "dismissed",
+        reason: "backdrop",
+      }),
+    );
+  });
+
+  it("closes only the top dialog in a stacked async flow on Escape", async () => {
+    const user = userEvent.setup();
+    const onFirst = vi.fn();
+    const onSecond = vi.fn();
+    render(
+      <DialogProvider>
+        <OpenStackedAsyncFlow onFirst={onFirst} onSecond={onSecond} />
+      </DialogProvider>,
+    );
+
+    await user.click(
+      screen.getByRole("button", { name: "Open stacked async" }),
+    );
+    await screen.findByRole("heading", { name: "First dialog" });
+    await screen.findByRole("heading", { name: "Second dialog" });
+
+    fireEvent.keyDown(window, { key: "Escape" });
+    await waitFor(() => {
+      const dialogs = document.querySelectorAll("dialog");
+      expect(dialogs).toHaveLength(2);
+      expect(dialogs[1]?.dataset.state).toBe("closing");
+    });
+    expect(onFirst).not.toHaveBeenCalled();
+    expect(onSecond).not.toHaveBeenCalled();
+
+    finishDialogExit();
+    await waitFor(() => expect(onSecond).toHaveBeenCalledWith("second:esc"));
+    expect(onFirst).not.toHaveBeenCalled();
+    expect(screen.getByRole("heading", { name: "First dialog" })).toBeTruthy();
+    expect(
+      screen.queryByRole("heading", { name: "Second dialog" }),
+    ).toBeNull();
+  });
+
+  it("keeps lower stacked dialogs open when the top backdrop closes", async () => {
+    const user = userEvent.setup();
+    const onFirst = vi.fn();
+    const onSecond = vi.fn();
+    render(
+      <DialogProvider>
+        <OpenStackedAsyncFlow onFirst={onFirst} onSecond={onSecond} />
+      </DialogProvider>,
+    );
+
+    await user.click(
+      screen.getByRole("button", { name: "Open stacked async" }),
+    );
+    await screen.findByRole("heading", { name: "First dialog" });
+    await screen.findByRole("heading", { name: "Second dialog" });
+    clickTopBackdrop();
+
+    await waitFor(() => {
+      const dialogs = document.querySelectorAll("dialog");
+      expect(dialogs).toHaveLength(2);
+      expect(dialogs[1]?.dataset.state).toBe("closing");
+    });
+    finishDialogExit();
+    await waitFor(() =>
+      expect(onSecond).toHaveBeenCalledWith("second:backdrop"),
+    );
+    expect(onFirst).not.toHaveBeenCalled();
+    expect(screen.getByRole("heading", { name: "First dialog" })).toBeTruthy();
   });
 
   it("uses the supplied dismiss fallback when closeTop closes an async entry", async () => {
