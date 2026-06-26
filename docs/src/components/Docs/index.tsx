@@ -236,6 +236,82 @@ import 'react-dialog-flow/ui/style.css';
           </div>
         </div>
       </section>
+      <section className="docs-section" id="examples">
+        <div className="section-heading">
+          <p className="section-kicker">06 / Practical flows</p>
+          <h2>Compose production dialog paths as ordinary async code.</h2>
+        </div>
+        <div className="docs-grid">
+          <div>
+            <p>
+              The useful part is not a single confirm modal. It is the ability
+              to select domain objects, ask follow-up questions, guard dirty
+              forms, and abort a stacked flow without spreading temporary modal
+              booleans through the page.
+            </p>
+            <p className="muted">
+              These examples work with the optional UI primitive or with your
+              own dialog components.
+            </p>
+          </div>
+          <CodeExample>{`const confirmed = await openAsync<boolean>(ConfirmDialog, {
+  title: 'Delete project?',
+  description: 'This cannot be undone.',
+  onDismiss: () => false,
+});
+
+if (confirmed) await deleteProject(project.id);
+
+const user = await openAsync<User | null>(UserSearchDialog, {
+  onDismiss: () => null,
+});
+
+if (!user) return;
+
+const invited = await openAsync<boolean>(ConfirmDialog, {
+  title: \`Invite \${user.name}?\`,
+  onDismiss: () => false,
+});
+
+if (invited) await inviteUser(user.id);`}</CodeExample>
+        </div>
+        <div className="docs-grid">
+          <CodeExample>{`<Dialog
+  closeOnBackdrop
+  shouldClose={async () => {
+    if (!formDirty) return true;
+
+    return await openAsync<boolean>(ConfirmDialog, {
+      title: 'Discard changes?',
+      description: 'Unsaved edits will be lost.',
+      onDismiss: () => false,
+    });
+  }}
+>
+  ...
+</Dialog>`}</CodeExample>
+          <CodeExample>{`const { closeAll, openAsync } = useDialog();
+
+const confirmed = await openAsync<boolean>(ConfirmDialog, {
+  title: 'Start import?',
+  onDismiss: () => false,
+});
+
+if (!confirmed) return;
+
+const overwrite = await openAsync<boolean>(ConfirmDialog, {
+  title: 'Overwrite existing records?',
+  onDismiss: () => false,
+});
+
+if (!overwrite) {
+  closeAll();
+  return;
+}
+
+await runImport();`}</CodeExample>
+        </div>
+      </section>
     </>
   );
 }
