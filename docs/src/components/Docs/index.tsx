@@ -1,9 +1,9 @@
 import { useState } from "react";
 
 const installCommands = {
-  npm: "npm install react-dialog-flow@beta",
-  pnpm: "pnpm add react-dialog-flow@beta",
-  yarn: "yarn add react-dialog-flow@beta",
+  npm: "npm install react-dialog-flow",
+  pnpm: "pnpm add react-dialog-flow",
+  yarn: "yarn add react-dialog-flow",
 } as const;
 
 type PackageManager = keyof typeof installCommands;
@@ -77,8 +77,8 @@ export function Docs() {
               supplied native-modal UI and styles.
             </p>
             <p className="muted">
-              The package leaves the <code>beta</code> tag after async result
-              timing, dismiss reasons, stacked dialogs, UI defaults, docs, and
+              The package is on the default npm dist-tag. Async result timing,
+              dismiss reasons, stacked dialogs, UI defaults, docs, and
               migration notes are covered for routine production upgrades.
             </p>
           </div>

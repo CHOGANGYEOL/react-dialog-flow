@@ -16,35 +16,23 @@ Docs and live playground: https://dialog-flow.kangyeol.com
 ## Install
 
 ```bash
-pnpm add react-dialog-flow@beta
+pnpm add react-dialog-flow
 ```
 
 ```bash
-npm install react-dialog-flow@beta
+npm install react-dialog-flow
 ```
 
 ```bash
-yarn add react-dialog-flow@beta
+yarn add react-dialog-flow
 ```
 
-## Beta status
+## Stability
 
-The package will move off the `beta` dist-tag when the public API and docs are
-stable enough for routine production upgrades. The release should meet these
-criteria first:
-
-- Async result semantics are covered for completion, dismissal reasons, exit
-  timing, and stacked dialogs.
-- The optional UI primitive has documented defaults for Escape, backdrop,
-  focus restoration, scroll lock, transitions, and styling hooks.
-- The docs and playground demonstrate the primary production flows:
-  promise-based orchestration, nested dialogs, `closeTop`, `closeAll`, and
-  theming.
-- A migration note exists for any breaking or behavior-shaping change since the
-  beta series began.
-
-After that point, install examples will switch from `react-dialog-flow@beta` to
-`react-dialog-flow`, and breaking changes will wait for a new major version.
+The package is published on the default npm dist-tag. Async result semantics,
+stacked dismissal, UI lifecycle defaults, and migration notes are covered by the
+test suite and documentation. Breaking changes will wait for a new major
+version.
 
 ## Quick start
 
@@ -90,7 +78,7 @@ function Page() {
     if (!user) return;
 
     const confirmed = await openAsync<boolean>(ConfirmDialog, {
-      title: `${user.name}을 추가할까요?`,
+      title: `Add ${user.name}?`,
       onDismiss: () => false,
     });
 
@@ -149,8 +137,9 @@ Both APIs resolve after the entry has completed its exit lifecycle.
 
 ## Migration notes
 
-There are no migration steps for the latest dialog lifecycle test coverage.
-The covered behavior already matches the public API:
+There are no application code changes required when upgrading from the beta
+series to `0.1.0`. The stable release keeps the covered behavior aligned with
+the public API:
 
 - `openAsync` and `openAsyncResult` resolve after exit transitions complete.
 - Dismissals report `esc`, `backdrop`, `header`, or `programmatic`.
