@@ -11,7 +11,6 @@ import type { OpenDialogAction } from "../core/createDialogStore";
 import type {
   CloseDialog,
   CloseReason,
-  AsyncDialogOptions,
   DialogResult,
   DialogProviderProps,
   DialogOpenProps,

@@ -137,8 +137,9 @@ Both APIs resolve after the entry has completed its exit lifecycle.
 
 ## Migration notes
 
-There are no migration steps for the latest dialog lifecycle test coverage.
-The covered behavior already matches the public API:
+There are no application code changes required when upgrading from the beta
+series to `0.1.0`. The stable release keeps the covered behavior aligned with
+the public API:
 
 - `openAsync` and `openAsyncResult` resolve after exit transitions complete.
 - Dismissals report `esc`, `backdrop`, `header`, or `programmatic`.
