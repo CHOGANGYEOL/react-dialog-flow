@@ -142,6 +142,82 @@ if (result.status === 'completed') {
 
 Both APIs resolve after the entry has completed its exit lifecycle.
 
+## Practical flows
+
+Delete confirmation:
+
+```tsx
+const confirmed = await openAsync<boolean>(ConfirmDialog, {
+  title: 'Delete project?',
+  description: 'This cannot be undone.',
+  onDismiss: () => false,
+});
+
+if (confirmed) await deleteProject(project.id);
+```
+
+User selection followed by confirmation:
+
+```tsx
+const user = await openAsync<User | null>(UserSearchDialog, {
+  onDismiss: () => null,
+});
+
+if (!user) return;
+
+const confirmed = await openAsync<boolean>(ConfirmDialog, {
+  title: `Invite ${user.name}?`,
+  description: `Add ${user.email} to this workspace.`,
+  onDismiss: () => false,
+});
+
+if (confirmed) await inviteUser(user.id);
+```
+
+Dirty form guard:
+
+```tsx
+<Dialog
+  closeOnBackdrop
+  shouldClose={async () => {
+    if (!formDirty) return true;
+
+    return await openAsync<boolean>(ConfirmDialog, {
+      title: 'Discard changes?',
+      description: 'Unsaved edits will be lost.',
+      onDismiss: () => false,
+    });
+  }}
+>
+  ...
+</Dialog>
+```
+
+Nested confirmation and flow abort:
+
+```tsx
+const { closeAll, openAsync } = useDialog();
+
+const confirmed = await openAsync<boolean>(ConfirmDialog, {
+  title: 'Start import?',
+  onDismiss: () => false,
+});
+
+if (!confirmed) return;
+
+const overwrite = await openAsync<boolean>(ConfirmDialog, {
+  title: 'Overwrite existing records?',
+  onDismiss: () => false,
+});
+
+if (!overwrite) {
+  closeAll();
+  return;
+}
+
+await runImport();
+```
+
 ## Optional UI primitive
 
 The stack is headless. Import the UI primitive for a native modal dialog,
