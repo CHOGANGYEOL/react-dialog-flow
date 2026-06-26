@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.1 — 2026-06-26
+
+- Fix `Dialog` so `closeOnEscape={false}` also blocks Escape close requests
+  routed through `DialogProvider`.
+- Add coverage for window-level Escape events against dialogs that disable
+  Escape dismissal.
+
 ## 0.1.0 — 2026-06-26
 
 - Add integration coverage for async dismissal timing, ensuring `openAsync`
