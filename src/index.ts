@@ -1,11 +1,3 @@
-export {
-  CLOSE_DIALOG,
-  OPEN_DIALOG,
-  closeDialog,
-  dialogsReducer,
-  entriesToClose,
-  openDialog,
-} from "./core/createDialogStore";
 export type {
   CloseDialog,
   CloseOptions,
