@@ -76,6 +76,11 @@ export function Docs() {
               Import <code>react-dialog-flow/ui</code> only when you want the
               supplied native-modal UI and styles.
             </p>
+            <p className="muted">
+              The package leaves the <code>beta</code> tag after async result
+              timing, dismiss reasons, stacked dialogs, UI defaults, docs, and
+              migration notes are covered for routine production upgrades.
+            </p>
           </div>
         </div>
       </section>
