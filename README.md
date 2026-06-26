@@ -27,6 +27,25 @@ npm install react-dialog-flow@beta
 yarn add react-dialog-flow@beta
 ```
 
+## Beta status
+
+The package will move off the `beta` dist-tag when the public API and docs are
+stable enough for routine production upgrades. The release should meet these
+criteria first:
+
+- Async result semantics are covered for completion, dismissal reasons, exit
+  timing, and stacked dialogs.
+- The optional UI primitive has documented defaults for Escape, backdrop,
+  focus restoration, scroll lock, transitions, and styling hooks.
+- The docs and playground demonstrate the primary production flows:
+  promise-based orchestration, nested dialogs, `closeTop`, `closeAll`, and
+  theming.
+- A migration note exists for any breaking or behavior-shaping change since the
+  beta series began.
+
+After that point, install examples will switch from `react-dialog-flow@beta` to
+`react-dialog-flow`, and breaking changes will wait for a new major version.
+
 ## Quick start
 
 Render one provider near the root of the application, then open dialogs as
