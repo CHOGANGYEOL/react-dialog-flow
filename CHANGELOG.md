@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.1.0 — 2026-06-26
 
 - Add integration coverage for async dismissal timing, ensuring `openAsync`
   resolves only after the dialog exit lifecycle completes.
@@ -8,11 +8,18 @@
   `openAsyncResult` and `onDismiss`.
 - Add stacked dialog coverage to confirm Escape and backdrop dismissal close
   only the top entry while lower entries remain mounted.
+- Add UI lifecycle coverage for focus restoration, scroll lock, immediate
+  motion, fallback motion completion, backdrop defaults, and provider unmount.
+- Align README, docs, and playground examples around promise-based dialog
+  orchestration.
+- Move installation examples from the `beta` dist-tag to the default npm
+  dist-tag.
 
 ### Migration notes
 
-- No application code changes are required. This release clarifies and tests
-  existing behavior.
+- No application code changes are required when upgrading from the beta series.
+  This release clarifies and tests existing behavior.
+- Install with `react-dialog-flow` instead of `react-dialog-flow@beta`.
 - If your app depends on async dialog promises resolving immediately when a
   close is requested, move that work to the dialog action handler or set
   `motionDuration={0}` for dialogs that should resolve without an exit delay.

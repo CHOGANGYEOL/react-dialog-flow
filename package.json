@@ -1,7 +1,7 @@
 {
   "name": "react-dialog-flow",
-  "version": "0.1.0-beta.4",
-  "description": "A typed React dialog stack with async results and optional native-modal UI primitives.",
+  "version": "0.1.0",
+  "description": "Promise-based dialog orchestration for React.",
   "keywords": [
     "react",
     "dialog",
@@ -47,8 +47,7 @@
     "node": ">=18"
   },
   "publishConfig": {
-    "access": "public",
-    "tag": "beta"
+    "access": "public"
   },
   "scripts": {
     "build": "tsup",
